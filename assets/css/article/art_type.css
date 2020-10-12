@@ -1,0 +1,18 @@
+.all {
+    padding: 15px 30px;
+}
+
+.header {
+    margin-bottom: 20px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.header span {
+    font-size: 14px;
+}
+
+.header button {
+    float: right;
+}
+
