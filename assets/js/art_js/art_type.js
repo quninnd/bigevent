@@ -20,15 +20,13 @@ $(function () {
 
     });
     //提交新增
-    var b = $('#form-b')
-    $('body').on('submit', b, function (e) {
-        if (e.target.action == 'http://127.0.0.1:5500/home/article/art_type.html') {
+    var b = $('#btnEdit')
+    $('body').on('click', b, function (e) {
+        e.preventDefault()
+        if (e.target.innerHTML == '确认添加') {
             var text = $('#form-b').serialize();
-            console.dir(e.target.action);
             fn(text);
         }
-
-
     });
 
 
@@ -40,7 +38,7 @@ $(function () {
         if (that.localName == 'button' && that.innerHTML == "编辑") {
             //将原来的数据渲染到弹出框
             var txt = $(that).parent().siblings();
-            var id = $(that).attr('num');
+            var id = '&Id=' + $(that).attr('num');
             var obj = {
                 txt1: txt[0].innerHTML,
                 txt2: txt[1].innerHTML
@@ -52,13 +50,30 @@ $(function () {
                 type: '0',
                 area: ['500px', '250px']
             });
-            //莫名其妙能赋值成功
-            // $('#btnEdit').on('click', function () {
-            //     layer.close(index1);
-            // })
+            //修改类型并更新数据
+            $('#btnEdit').on('click', function () {
+                if (this.innerHTML = '确认修改') {
+                    // 调用编辑更新文类别打的函数
+                    var text = $(this).parents('#form-b').serialize() + id;
+                    article_Edit(text);
+                }
+                layer.close(index1);
+            })
         }
     });
 })
+
+
+//点击删除就删除对应的数据
+var btnE = $('#btnE')
+$('body').on('click', btnE, function (e) {
+    var Id = e.target.getAttribute('num');
+    if (e.target.innerHTML == '删除') {
+        remove(Id);
+    }
+})
+
+
 
 //渲染页面的函数
 function getType() {
@@ -81,10 +96,37 @@ function fn(text) {
         data: text,
         success: function (res) {
             if (res.status != 0) return layer.msg('添加文章失败');
-            layer.close(index);
             getType();
-            console.log('调用了fn函数');
+            layer.close(index);
+        }
+    })
+}
 
+//编辑后发送ajax到后台的函数
+function article_Edit(text) {
+    $.ajax({
+        url: '/my/article/updatecate',
+        method: 'POST',
+        data: text,
+        success: function (res) {
+            if (res.status == 0) {
+                getType();
+            }
+        }
+    })
+};
+
+
+//删除数据的ajax函数
+function remove(id) {
+    $.ajax({
+        method: 'get',
+        url: '/my/article/deletecate/' + id,
+        success: function (res) {
+            if (res.status == 1) return layer.msg(res.message);
+            if (res.status == 0) {
+                getType();
+            }
         }
     })
 }

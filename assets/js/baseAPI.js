@@ -5,15 +5,14 @@ $.ajaxPrefilter(function (option) {
         option.headers = {
             Authorization: localStorage.getItem('token')
         }
-        
+
     };
     // 未登录不能访问index首页
-    option.complete = function (res) {
-        var slice = res.responseJSON;
-        // console.log(slice);
-        if (slice.status != 0) {
-            localStorage.removeItem('token');
-            location.href = '../../home/login.html'
-        }
-    }
+    // option.complete = function (res) {
+    //     console.log(res);
+    //     if (res.responseJSON && res.responseJSON.status != 0) {
+    //         localStorage.removeItem('token');
+    //         location.href = '../../home/login.html'
+    //     }
+    // }
 })
