@@ -70,6 +70,7 @@ $('body').on('click', btnE, function (e) {
     var Id = e.target.getAttribute('num');
     if (e.target.innerHTML == '删除') {
         remove(Id);
+        layer.msg('删除成功')
     }
 })
 

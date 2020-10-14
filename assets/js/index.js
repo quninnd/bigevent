@@ -1,7 +1,8 @@
+getInit();
+
+
 $(function () {
     //初始化头像和数据
-    getInit();
-
     // 实现点击退出按钮，退出登录的功能
     $('#logout').click(function () {
         var flag = confirm('确认退出吗？')
