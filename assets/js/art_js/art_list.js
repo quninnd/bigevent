@@ -70,6 +70,7 @@ $(function () {
     $('tbody').on('click', '.btn-delete', function () {
         //拿到当前删除数据的 id
         var id = $(this).attr('data-id');
+        var len = $('.btn-delete').length;
         layer.confirm('确定删除吗？', { icon: 3, title: '提示' }, function (index) {
             $.ajax({
                 url: '/my/article/delete/' + id,
@@ -77,6 +78,10 @@ $(function () {
                 success: function (res) {
                     if (status == 0) {
                         //    删除成功后调用渲染函数，重新渲染页面
+                        //如果删除了当前页的最后一条数据，就跳转到前一页
+                        if (len == 1) {
+                            q.pagenum = q.pagenum == 1 ? 1 : q.pagenum - 1;
+                        }
                         getInitList();
                     } else {
                         layer.msg('删除操作失败')
